@@ -1,8 +1,7 @@
 ## 프로젝트 소개
 
-> json-server로 만든 가상의 서버에서 견적 요청서 목록 데이터를 가져와 화면에 출력하고 
-필터링과 토글 기능으로 조건에 맞는 요청서가 보여질 수 있도록 하는 페이지 제작.
-> 
+> json-server로 만든 가상의 서버에서 견적 요청서 목록 데이터를 가져와 화면에 출력하고
+> 필터링과 토글 기능으로 조건에 맞는 요청서가 보여질 수 있도록 하는 페이지 제작.
 
 ### member
 
@@ -47,26 +46,31 @@
   </tr>
 </table>
 
+| 팀 구성        | 담당                            |
+| -------------- | ------------------------------- |
+| 이주영, 윤창현 | 견적요청서 제작, 토글 버튼 구현 |
+| 이현호, 박훈주 | 필터 및 리셋 구현, 반응형 제작  |
+
 ## 배포 주소
 
-
+https://estimate-board-page.herokuapp.com/
 
 ### 시작
 
 ```bash
-npm run dev
+npm start
 ```
 
 ## 사용 기술 및 스택
 
 - Stack
-    - React Hooks
-    - styled-components
-    - fetch / json-server
-    - Deploy : Netilfy
-    - Other : Git / GitHub
-    - Build Tool (Create React App)
-    - Code Quality Tool (Prettier)
+  - React Hooks
+  - styled-components
+  - fetch / json-server
+  - Deploy : Netilfy
+  - Other : Git / GitHub
+  - Build Tool (Create React App)
+  - Code Quality Tool (Prettier)
 
 ## 기능 구현 목록
 
@@ -75,28 +79,6 @@ npm run dev
 - json-server로 만든 mock data(db.json)를 받아오기 위해 `fetcher` 함수 제작.
 - `fetcher` 로 받아온 데이터를 state에 저장해서 관리. state type : `Estimate[]`
 - API 데이터가 없거나 필터링 조건에 부합하지 않으면 빈 화면 노출
-
-```jsx
-export interface Estimate {
-  id: number;
-  material: string[];
-  method: string[];
-  status: string;
-	//...
-}
-```
-
-```jsx
-export const fetcher = async () => {
-  const response = await fetch('/requests', {method: 'GET'});
-  if (response) {
-    const data = await response.json();
-    return data;
-  } else {
-    return [];
-  }
-};
-```
 
 ### 상담중 요청만 보기 토글 활성화
 
@@ -107,9 +89,8 @@ export const fetcher = async () => {
 
 1. new Set()을 활용하여 method, materials에 해당하는 카테고리들이 중복 없이 동적으로 리스트업 될 수 있도록 구현.
 2. util 함수 getFilter()를 활용하여 선택된 카테고리에 해당하는 카드박스만 보여질 수 있도록 구현.
-    
-    필터링은 복수 선택이 가능. 필터 리셋 버튼 생성.
-    
+
+   필터링은 복수 선택이 가능. 필터 리셋 버튼 생성.
 
 ### 모바일 반응형 UI 제작
 
@@ -184,7 +165,17 @@ export const Device = {
 
 깃모지를 사용하여 직관성을 높이고, 기능이나 UI 설계에 따른 메세지를 커밋 메세지에 담는것을 컨벤션으로 결정했습니다. 깃모지로 인해 상대방이 어떤 작업을 수행했는지 한 눈에 확인할 수 있고, 메세지를 보며 조금 더 상세한 상황을 파악할 수 있습니다.
 
----
+| 깃모지 | 사용 예시               |
+| ------ | ----------------------- |
+| 🎉     | init                    |
+| 🚚     | 디렉토리 또는 파일 이동 |
+| ✨     | 기능 구현               |
+| 💄     | CSS 스타일링            |
+| ♻️     | 리팩토링                |
+| 📝     | Readme 수정             |
+| ➕     | 모듈 추가               |
+| 🐛     | 버그 해결               |
+| 🚑️    | 치명적인 오류 해결      |
 
 ## 과제 후기
 

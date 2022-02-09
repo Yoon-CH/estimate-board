@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { COLOR, Device } from 'constants/';
+import { COLOR, DEVICE } from 'constants/';
 import { Building, Hamburger, LogoText } from 'images';
 import { SideNav } from './SideNav';
 
@@ -32,7 +32,7 @@ const NavContainer = styled.nav`
   height: 70px;
   background: ${COLOR.BLUE};
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.24);
-  @media ${Device.small} {
+  @media ${DEVICE.SMALL} {
     justify-content: flex-start;
   }
 `;
@@ -65,7 +65,7 @@ const MenuList = styled.ul`
       }
     }
   }
-  @media ${Device.small} {
+  @media ${DEVICE.SMALL} {
     & {
       display: none;
     }
@@ -83,7 +83,7 @@ const HamburgerImage = styled.img`
   height: 18px;
   margin-right: 19px;
   cursor: pointer;
-  @media ${Device.small} {
+  @media ${DEVICE.SMALL} {
     display: block;
   }
 `;

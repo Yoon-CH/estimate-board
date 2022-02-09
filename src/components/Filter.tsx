@@ -18,92 +18,93 @@ export const Filter = ({ apiData, setCategories }: Props) => {
   const materialSet = Array.from(new Set(materialArr));
   const [selectMethod, setSelectMethod] = useState<string[]>([]);
   const [selectMaterial, setSelectMaterial] = useState<string[]>([]);
-  const [method, setMethod] = useState(false);
-  const [material, setMaterial] = useState(false);
+  const [isMethodOpen, setIsMethodOpen] = useState(false);
+  const [isMaterialOpen, setIsMaterialOpen] = useState(false);
   const [clear, setClear] = useState(false);
 
   useEffect(() => {
     setCategories({ method: selectMethod, material: selectMaterial });
   }, [selectMethod, selectMaterial, setCategories]);
 
-  const onCheckMethod = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheck = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: string
+  ) => {
     let newSelected;
+    const setStateRef = type === 'method' ? setSelectMethod : setSelectMaterial;
+    const stateRef = type === 'method' ? selectMethod : selectMaterial;
     if (!e.target.checked) {
-      newSelected = selectMethod.filter(method => method !== e.target.id);
-      setSelectMethod(newSelected);
+      newSelected = stateRef.filter(method => method !== e.target.id);
+      setStateRef(newSelected);
       return;
     }
-    newSelected = [...selectMethod, e.target.id];
-    setSelectMethod(newSelected);
+    newSelected = [...stateRef, e.target.id];
+    setStateRef(newSelected);
   };
-  const onCheckMaterial = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newSelected;
-    if (!e.target.checked) {
-      newSelected = selectMaterial.filter(mat => mat !== e.target.id);
-      setSelectMaterial(newSelected);
-      return;
-    }
-    newSelected = [...selectMaterial, e.target.id];
-    setSelectMaterial(newSelected);
+
+  const handleOpen = (type: string) => {
+    if (type === 'method') return setIsMethodOpen(!isMethodOpen);
+    if (type === 'material') return setIsMaterialOpen(!isMaterialOpen);
   };
-  const onMethod = () => {
-    setMethod(!method);
-  };
-  const onMaterial = () => {
-    setMaterial(!material);
-  };
-  const onReset = () => {
+
+  const handleReset = () => {
     setClear(true);
     setSelectMethod([]);
     setSelectMaterial([]);
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLUListElement>, type: string) => {
+    if (e.relatedTarget !== null) {
+      return;
+    }
+    if (type === 'method') return setIsMethodOpen(false);
+    if (type === 'material') return setIsMaterialOpen(false);
+  };
+
   return (
     <FilterBox>
-      <FilterUl>
+      <FilterUl onBlur={e => handleBlur(e, 'method')} tabIndex={0}>
         <Select
           className={selectMethod.length > 0 ? 'active' : ''}
-          onClick={onMethod}
+          onClick={() => handleOpen('method')}
         >
           가공방식{selectMethod.length > 0 && `(${selectMethod.length})`}
         </Select>
-        {method && (
-          <ListUl>
-            {methodSet.map((data, i) => (
-              <FilterInput
-                key={`method-${i}`}
-                onCheck={onCheckMethod}
-                data={data}
-                clear={clear}
-                setClear={setClear}
-              />
-            ))}
-          </ListUl>
-        )}
+        <MethodUl className={isMethodOpen ? 'active' : ''}>
+          {methodSet.map((data, i) => (
+            <FilterInput
+              key={`method-${i}`}
+              onCheck={handleCheck}
+              type={'method'}
+              data={data}
+              clear={clear}
+              setClear={setClear}
+            />
+          ))}
+        </MethodUl>
       </FilterUl>
-      <FilterUl>
+      <FilterUl onBlur={e => handleBlur(e, 'material')} tabIndex={0}>
         <Select
           className={selectMaterial.length > 0 ? 'active' : ''}
-          onClick={onMaterial}
+          onClick={() => handleOpen('material')}
         >
           재료{selectMaterial.length > 0 && `(${selectMaterial.length})`}
         </Select>
-        {material && (
-          <ListUl>
-            {materialSet.map((data, i) => (
-              <FilterInput
-                key={`material-${i}`}
-                onCheck={onCheckMaterial}
-                data={data}
-                clear={clear}
-                setClear={setClear}
-              />
-            ))}
-          </ListUl>
-        )}
+        <MaterialUl className={isMaterialOpen ? 'active' : ''}>
+          {materialSet.map((data, i) => (
+            <FilterInput
+              key={`material-${i}`}
+              onCheck={handleCheck}
+              type={'material'}
+              data={data}
+              clear={clear}
+              setClear={setClear}
+            />
+          ))}
+        </MaterialUl>
       </FilterUl>
       {(selectMethod.length > 0 || selectMaterial.length > 0) && (
-        <FilterReset onClick={onReset}>
+        <FilterReset onClick={handleReset}>
           <img src={Refresh} alt="refreshIcon" />
           필터링 리셋
         </FilterReset>
@@ -167,8 +168,9 @@ const Select = styled.li`
     border-right: 4px solid transparent;
   }
 `;
-const ListUl = styled.ul`
+const MethodUl = styled.ul`
   position: absolute;
+  visibility: hidden;
   top: 32px;
   left: 0;
   padding: 8px 5px;
@@ -177,6 +179,24 @@ const ListUl = styled.ul`
   border-radius: 4px;
   background-color: #fff;
   z-index: 100;
+  &.active {
+    visibility: visible;
+  }
+`;
+const MaterialUl = styled.ul`
+  position: absolute;
+  visibility: hidden;
+  top: 32px;
+  left: 0;
+  padding: 8px 5px;
+  border: 1px solid ${COLOR.GRAY};
+  width: 100%;
+  border-radius: 4px;
+  background-color: #fff;
+  z-index: 100;
+  &.active {
+    visibility: visible;
+  }
 `;
 
 const FilterReset = styled.li`

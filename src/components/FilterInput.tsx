@@ -1,33 +1,39 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  onCheck: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCheck: (e: React.ChangeEvent<HTMLInputElement>, type: string) => void;
   data: [];
+  type: string;
   clear: boolean;
   setClear: Dispatch<SetStateAction<boolean>>;
 }
 
-export const FilterInput = ({ onCheck, data, clear, setClear }: Props) => {
-  const [isChecked, setIsChecked] = useState(false);
+export const FilterInput = ({
+  onCheck,
+  data,
+  clear,
+  setClear,
+  type,
+}: Props) => {
   useEffect(() => {
     if (clear === true) {
-      setIsChecked(false);
+      checkedRef.current = false;
     }
   }, [clear]);
+  const checkedRef = useRef(false);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
     setClear(false);
-    setIsChecked(!isChecked);
+    checkedRef.current = !checkedRef.current;
   };
-
   return (
     <List>
       <input
-        onChange={e => onCheck(e)}
+        onChange={e => onCheck(e, type)}
         type="checkbox"
         id={`${data}`}
-        checked={isChecked}
+        checked={checkedRef.current}
         onClick={handleClick}
       />
       <label htmlFor={`${data}`}>{data}</label>

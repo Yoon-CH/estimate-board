@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { EstimateList } from 'components/EstimateList';
 import { Estimate } from 'types/card';
 import { Toggle } from 'components/Toggle';
-import { fetcher } from 'utils/fetcher';
-import { COLOR, Device } from 'constants/';
+import { COLOR, DEVICE } from 'constants/';
 import styled from 'styled-components';
 import { Filter } from 'components/Filter';
 import { Category } from 'types/category';
@@ -18,7 +17,7 @@ export const MainPage = () => {
 
   useEffect(() => {
     (async function fetchData() {
-      const data = await fetcher();
+      const data = await (await fetch('/requests')).json();
       setApiData(data);
     })();
   }, []);
@@ -45,8 +44,8 @@ export const MainPage = () => {
 const OptionContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 40px 0 30px;
-  @media ${Device.small} {
+  margin: 40px 0;
+  @media ${DEVICE.SMALL} {
     flex-direction: column;
     align-items: flex-start;
     & > ul:first-child {
@@ -57,8 +56,8 @@ const OptionContainer = styled.div`
 
 const PageContainer = styled.main`
   max-width: 1130px;
-  margin: 40px auto;
-  padding: 0 15px;
+  margin: 0 auto;
+  padding: 40px 15px;
 `;
 
 const MainHeader = styled.div`

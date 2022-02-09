@@ -23,13 +23,13 @@ time, mark, audio, video {
 	font-family: 'Noto Sans KR', sans-serif;
 	color: #323D45;
 }
-
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
 	line-height: 1;
+	overflow-y: scroll;
 }
 ol, ul {
 	list-style: none;

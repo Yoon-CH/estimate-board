@@ -64,7 +64,7 @@ npm start
 ## 사용 기술 및 스택
 
 - Stack
-  - React Hooks
+  - React Hooks, TypeScript
   - styled-components
   - fetch / json-server
   - Deploy : Netilfy
